@@ -1,0 +1,32 @@
+GIT
+  remote: git://github.com/quintel/merit.git
+  revision: ff3f1790a2c41d08fc1bc24b9e3e047bef73cc86
+  branch: convergence
+  specs:
+    quintel_merit (0.1.0)
+      terminal-table
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    diff-lcs (1.2.5)
+    rspec (3.0.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+    rspec-core (3.0.2)
+      rspec-support (~> 3.0.0)
+    rspec-expectations (3.0.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.0.0)
+    rspec-mocks (3.0.2)
+      rspec-support (~> 3.0.0)
+    rspec-support (3.0.2)
+    terminal-table (1.4.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  quintel_merit!
+  rspec
