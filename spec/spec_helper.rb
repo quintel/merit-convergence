@@ -1,3 +1,7 @@
+require 'bundler'
+
+Bundler.require(:default, :test)
+
 require 'rspec'
 require_relative '../lib/merit/convergence'
 

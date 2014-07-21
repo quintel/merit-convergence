@@ -1,3 +1,5 @@
 require 'bundler'
 
-Bundle.require(:production)
+Bundler.require(:default)
+
+require_relative 'convergence/calculator'
