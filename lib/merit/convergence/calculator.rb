@@ -80,8 +80,8 @@ module Merit
 
             transients.insert(insert_at || transients.length, producer)
           elsif remaining > 0
-            # There is less total load left to assign than the adding an entire
-            # new plant.
+            # There is less total load remaining to be assigned than the
+            # capacity of a new plant.
             add_load(producer, point, remaining)
 
             # Cost-function producers with at least one unit of capacity
