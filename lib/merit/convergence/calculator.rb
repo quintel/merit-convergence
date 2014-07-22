@@ -107,10 +107,8 @@ module Merit
       def pcost(producer, point)
         strategy = producer.cost_strategy
 
-        if strategy.is_a?(Merit::CostStrategy::LinearCostFunction)
-          strategy.__send__(
-            :linear_cost_function, producer.load_curve.get(point)
-          )
+        if strategy.respond_to?(:cost_at_load)
+          strategy.cost_at_load(producer.load_curve.get(point))
         else
           strategy.sortable_cost(point)
         end
