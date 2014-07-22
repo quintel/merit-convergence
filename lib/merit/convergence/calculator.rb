@@ -90,6 +90,9 @@ module Merit
               assign_price_setting(order, producer, point)
               break
             end
+
+            # The next producer will be price-setting.
+            remaining = 0
           else
             assign_price_setting(order, producer, point)
 
