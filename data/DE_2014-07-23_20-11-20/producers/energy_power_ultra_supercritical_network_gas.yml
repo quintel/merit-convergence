@@ -1,0 +1,9 @@
+---
+:key: :energy_power_ultra_supercritical_network_gas
+:marginal_costs: 58.34429903154432
+:output_capacity_per_unit: 800.0
+:number_of_units: 6.819866071428572
+:availability: 0.89
+:fixed_costs_per_unit: 29085600.0
+:fixed_om_costs_per_unit: 1365600.0
+:type: DispatchableProducer

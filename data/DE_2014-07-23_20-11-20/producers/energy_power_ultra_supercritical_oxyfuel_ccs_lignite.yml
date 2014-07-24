@@ -1,0 +1,9 @@
+---
+:key: :energy_power_ultra_supercritical_oxyfuel_ccs_lignite
+:marginal_costs: 19.337017989865874
+:output_capacity_per_unit: 660.0
+:number_of_units: 0.0
+:availability: 0.85
+:fixed_costs_per_unit: 240498185.0913642
+:fixed_om_costs_per_unit: 21906185.0913642
+:type: DispatchableProducer

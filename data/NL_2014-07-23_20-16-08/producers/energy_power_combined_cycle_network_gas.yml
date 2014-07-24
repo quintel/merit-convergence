@@ -1,0 +1,9 @@
+---
+:key: :energy_power_combined_cycle_network_gas
+:marginal_costs: 41.834610238453315
+:output_capacity_per_unit: 800.0000000000001
+:number_of_units: 7.5383749999999985
+:availability: 0.9
+:fixed_costs_per_unit: 61526416.66666667
+:fixed_om_costs_per_unit: 9066666.66666667
+:type: DispatchableProducer

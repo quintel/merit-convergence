@@ -1,0 +1,11 @@
+---
+:key: :buildings_collective_chp_network_gas
+:marginal_costs: 63.718170394334265
+:output_capacity_per_unit: 2.0
+:number_of_units: 36.70828745230167
+:availability: 0.97
+:fixed_costs_per_unit: 116000.0
+:fixed_om_costs_per_unit: 0.0
+:full_load_hours: 4000.0
+:load_profile_key: buildings_chp
+:type: MustRunProducer

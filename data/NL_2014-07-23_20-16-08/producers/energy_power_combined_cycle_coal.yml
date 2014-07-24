@@ -1,0 +1,9 @@
+---
+:key: :energy_power_combined_cycle_coal
+:marginal_costs: 17.30094973609491
+:output_capacity_per_unit: 800.0
+:number_of_units: 0.31599293478260887
+:availability: 0.9
+:fixed_costs_per_unit: 157393563.66666666
+:fixed_om_costs_per_unit: 16000000.0
+:type: DispatchableProducer

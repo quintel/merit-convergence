@@ -1,0 +1,9 @@
+---
+:key: :energy_power_hydro_mountain
+:marginal_costs: 2.4920896602739795
+:output_capacity_per_unit: 500.00000000000006
+:number_of_units: 2.619525556544969
+:availability: 0.33
+:fixed_costs_per_unit: 51155234.429589
+:fixed_om_costs_per_unit: 5415845.84383562
+:type: DispatchableProducer

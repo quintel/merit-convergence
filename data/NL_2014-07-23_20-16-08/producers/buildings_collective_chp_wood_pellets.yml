@@ -1,0 +1,11 @@
+---
+:key: :buildings_collective_chp_wood_pellets
+:marginal_costs: 147.44745762711864
+:output_capacity_per_unit: 1.5
+:number_of_units: 0.0
+:availability: 0.97
+:fixed_costs_per_unit: 1270700.0
+:fixed_om_costs_per_unit: 632700.0
+:full_load_hours: 6000.0
+:load_profile_key: buildings_chp
+:type: MustRunProducer

@@ -1,0 +1,11 @@
+---
+:key: :industry_chp_engine_gas_power_fuelmix
+:marginal_costs: 71.20164234718268
+:output_capacity_per_unit: 1.0
+:number_of_units: 28.15138400578117
+:availability: 0.97
+:fixed_costs_per_unit: 70000.0
+:fixed_om_costs_per_unit: 0.0
+:full_load_hours: 6000.0
+:load_profile_key: industry_chp
+:type: MustRunProducer

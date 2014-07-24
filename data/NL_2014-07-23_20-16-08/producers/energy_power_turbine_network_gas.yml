@@ -1,0 +1,9 @@
+---
+:key: :energy_power_turbine_network_gas
+:marginal_costs: 73.76326856050584
+:output_capacity_per_unit: 150.0
+:number_of_units: 3.7112000000000056
+:availability: 0.89
+:fixed_costs_per_unit: 6634766.74125
+:fixed_om_costs_per_unit: 927202.5
+:type: DispatchableProducer

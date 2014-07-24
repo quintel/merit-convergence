@@ -1,0 +1,9 @@
+---
+:key: :energy_power_ultra_supercritical_crude_oil
+:marginal_costs: 114.98312557612161
+:output_capacity_per_unit: 800.0
+:number_of_units: 0.0
+:availability: 0.89
+:fixed_costs_per_unit: 49359622.3692314
+:fixed_om_costs_per_unit: 15059622.3692314
+:type: DispatchableProducer

@@ -1,0 +1,9 @@
+---
+:key: :energy_power_engine_diesel
+:marginal_costs: 143.3780010769861
+:output_capacity_per_unit: 2.0
+:number_of_units: 0.0
+:availability: 0.95
+:fixed_costs_per_unit: 34000.0
+:fixed_om_costs_per_unit: 0.0
+:type: DispatchableProducer

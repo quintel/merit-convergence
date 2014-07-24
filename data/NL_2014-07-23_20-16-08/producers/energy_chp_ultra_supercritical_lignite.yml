@@ -1,0 +1,9 @@
+---
+:key: :energy_chp_ultra_supercritical_lignite
+:marginal_costs: 14.440178971428578
+:output_capacity_per_unit: 700.0
+:number_of_units: 0.0
+:availability: 0.97
+:fixed_costs_per_unit: 129225833.33333333
+:fixed_om_costs_per_unit: 32480000.0
+:type: DispatchableProducer

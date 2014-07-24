@@ -1,0 +1,11 @@
+---
+:key: :energy_power_solar_csp_solar_radiation
+:marginal_costs: 1.0
+:output_capacity_per_unit: 50.0
+:number_of_units: 0.0
+:availability: 0.99
+:fixed_costs_per_unit: 15129166.666666668
+:fixed_om_costs_per_unit: 400000.0
+:full_load_hours: 500.0
+:load_profile_key: solar_pv
+:type: VolatileProducer

@@ -1,0 +1,9 @@
+---
+:key: :energy_chp_combined_cycle_network_gas
+:marginal_costs: 55.30028479194698
+:output_capacity_per_unit: 120.0
+:number_of_units: 103.17777777777773
+:availability: 0.9
+:fixed_costs_per_unit: 12381000.0
+:fixed_om_costs_per_unit: 1356000.0
+:type: DispatchableProducer

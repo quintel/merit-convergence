@@ -1,0 +1,11 @@
+---
+:key: :energy_power_wind_turbine_inland
+:marginal_costs: 0.0
+:output_capacity_per_unit: 3.0
+:number_of_units: 10054.541616405297
+:availability: 0.95
+:fixed_costs_per_unit: 531768.45
+:fixed_om_costs_per_unit: 147579.9
+:full_load_hours: 1658.0
+:load_profile_key: wind_inland
+:type: VolatileProducer

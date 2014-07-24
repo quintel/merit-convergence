@@ -1,0 +1,11 @@
+---
+:key: :agriculture_chp_engine_network_gas
+:marginal_costs: 60.05752953238615
+:output_capacity_per_unit: 2.0
+:number_of_units: 0.0
+:availability: 0.97
+:fixed_costs_per_unit: 140000.0
+:fixed_om_costs_per_unit: 0.0
+:full_load_hours: 3600.0
+:load_profile_key: agriculture_chp
+:type: MustRunProducer

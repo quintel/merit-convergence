@@ -1,0 +1,11 @@
+---
+:key: :energy_power_hydro_river
+:marginal_costs: 0.0
+:output_capacity_per_unit: 10.0
+:number_of_units: 2.280000000000002
+:availability: 0.98
+:fixed_costs_per_unit: 3000000.0
+:fixed_om_costs_per_unit: 320000.0
+:full_load_hours: 2500.0
+:load_profile_key: river
+:type: VolatileProducer

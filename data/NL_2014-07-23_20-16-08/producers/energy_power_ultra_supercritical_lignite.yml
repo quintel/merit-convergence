@@ -1,0 +1,9 @@
+---
+:key: :energy_power_ultra_supercritical_lignite
+:marginal_costs: 13.6726566
+:output_capacity_per_unit: 800.0
+:number_of_units: 0.0
+:availability: 0.89
+:fixed_costs_per_unit: 112037800.0
+:fixed_om_costs_per_unit: 19607800.0
+:type: DispatchableProducer

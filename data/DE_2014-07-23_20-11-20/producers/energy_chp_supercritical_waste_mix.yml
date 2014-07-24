@@ -1,0 +1,11 @@
+---
+:key: :energy_chp_supercritical_waste_mix
+:marginal_costs: 0.0
+:output_capacity_per_unit: 60.0
+:number_of_units: 12.450000000000003
+:availability: 0.97
+:fixed_costs_per_unit: 19245000.0
+:fixed_om_costs_per_unit: 4800000.0
+:full_load_hours: 6000.0
+:load_profile_key: industry_chp
+:type: MustRunProducer

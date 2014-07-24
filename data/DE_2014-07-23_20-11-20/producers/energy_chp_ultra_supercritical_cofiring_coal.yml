@@ -1,0 +1,9 @@
+---
+:key: :energy_chp_ultra_supercritical_cofiring_coal
+:marginal_costs: 47.436253385072106
+:output_capacity_per_unit: 643.478260869565
+:number_of_units: 2.7496396396396405
+:availability: 0.88
+:fixed_costs_per_unit: 135592935.278125
+:fixed_om_costs_per_unit: 30886957.0
+:type: DispatchableProducer

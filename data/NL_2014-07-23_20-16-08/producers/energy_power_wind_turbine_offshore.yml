@@ -1,0 +1,11 @@
+---
+:key: :energy_power_wind_turbine_offshore
+:marginal_costs: 0.0
+:output_capacity_per_unit: 3.0
+:number_of_units: 78.68571428571438
+:availability: 0.92
+:fixed_costs_per_unit: 1643536.010600175
+:fixed_om_costs_per_unit: 428882.885600175
+:full_load_hours: 3500.0
+:load_profile_key: wind_offshore
+:type: VolatileProducer

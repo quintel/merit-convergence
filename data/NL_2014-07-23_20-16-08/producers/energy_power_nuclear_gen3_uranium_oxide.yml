@@ -1,0 +1,9 @@
+---
+:key: :energy_power_nuclear_gen3_uranium_oxide
+:marginal_costs: 4.844769136055791
+:output_capacity_per_unit: 1650.0000000000002
+:number_of_units: 0.3199919634957248
+:availability: 0.9
+:fixed_costs_per_unit: 552526594.7712419
+:fixed_om_costs_per_unit: 80901594.7712419
+:type: DispatchableProducer

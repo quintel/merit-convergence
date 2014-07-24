@@ -1,0 +1,11 @@
+---
+:key: :households_water_heater_micro_chp_network_gas
+:marginal_costs: .nan
+:output_capacity_per_unit: 0.001
+:number_of_units: 0.0
+:availability: 0.97
+:fixed_costs_per_unit: 933.3333333333334
+:fixed_om_costs_per_unit: 110.0
+:full_load_hours: 0.0
+:load_profile_key: buildings_chp
+:type: MustRunProducer

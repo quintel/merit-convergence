@@ -1,0 +1,11 @@
+---
+:key: :industry_chp_ultra_supercritical_coal
+:marginal_costs: 24.612078502121282
+:output_capacity_per_unit: 17.3611111111111
+:number_of_units: 0.0
+:availability: 0.97
+:fixed_costs_per_unit: 3490759.55504
+:fixed_om_costs_per_unit: 1301009.55504
+:full_load_hours: 7000.0
+:load_profile_key: industry_chp
+:type: MustRunProducer
