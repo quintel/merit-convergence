@@ -32,16 +32,16 @@ module Merit
         curve = Curve.new([], Merit::POINTS)
 
         Merit::POINTS.times do |point|
-          # Quickly move to the next hour if energy is more expensive locally
-          # than it is abroad.
-          next unless cheaper_locally?(point)
+          if cheaper_locally?(point)
+            available = available_capacity(point)
 
-          available = available_capacity(point)
-
-          if available > @capacity.get(point)
-            curve.set(point, @capacity.get(point))
+            if available > @capacity.get(point)
+              curve.set(point, @capacity.get(point))
+            else
+              curve.set(point, available)
+            end
           else
-            curve.set(point, available)
+            curve.set(point, 0.0)
           end
         end
 
@@ -66,7 +66,7 @@ module Merit
       #
       # Returns a Numeric.
       def available_capacity(point)
-        producers_for(point, @other_price.get(point)).reduce(0) do |sum, prod|
+        producers_for(point, @other_price.get(point)).reduce(0.0) do |sum, prod|
           sum + (prod.max_load_at(point) - prod.load_curve.get(point))
         end
       end
@@ -77,7 +77,7 @@ module Merit
       # Returns an array of producers.
       def producers_for(point, price)
         @order.participants.dispatchables.select do |producer|
-          (producer.marginal_costs < price) &&
+          (producer.cost_strategy.sortable_cost(point) < price) &&
             (producer.max_load_at(point) > producer.load_curve.get(point))
         end
       end
