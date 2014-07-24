@@ -25,7 +25,7 @@ module Merit
     let(:vol_1_attrs) {{
       key:                       :volatile,
       marginal_costs:            19.999791,
-      load_profile_key:          :industry_chp,
+      load_profile:              LoadProfile.new('', [3.1709791984e-08]),
       output_capacity_per_unit:  0.1,
       availability:              0.95,
       number_of_units:           1,
@@ -37,7 +37,7 @@ module Merit
     let(:vol_2_attrs) {{
       key:                       :volatile_two,
       marginal_costs:            21.21,
-      load_profile_key:          :solar_pv,
+      load_profile:              LoadProfile.new('', [0.0]),
       output_capacity_per_unit:  0.1,
       availability:              0.95,
       number_of_units:           1,
@@ -63,7 +63,10 @@ module Merit
     let(:dispatchable)     { DispatchableProducer.new(disp_1_attrs) }
     let(:dispatchable_two) { DispatchableProducer.new(disp_2_attrs) }
 
-    let(:user) { User.create(key: :total_demand, total_consumption: 6.4e6) }
+    let(:user) do
+      User.create(key: :total_demand, total_consumption: 6.4e6,
+                  load_profile: LoadProfile.new('', [2.775668529550e-08]))
+    end
 
     context 'with an excess of demand' do
       before { Convergence::Calculator.new.calculate(order) }
