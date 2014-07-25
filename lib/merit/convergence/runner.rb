@@ -2,7 +2,7 @@ module Merit
   module Convergence
     # The most generic class name ever?
     class Runner
-      attr_reader :first_order, :second_order
+      attr_reader :first_order, :second_order, :other_orders
 
       # Creates a Runner. Provide this with a Convergence::Archive with data for
       # for the main country being calculated.

@@ -16,7 +16,7 @@ module Merit
       #
       # Returns a String.
       def area
-        @path.join('area.txt').read.strip.to_sym
+        info[:area].to_sym
       end
 
       # Public: Creates a new Merit::Order with the data contained in the
@@ -48,7 +48,7 @@ module Merit
       #
       # Returns a Float.
       def total_demand
-        @path.join('total_demand.txt').read.strip.to_f
+        info[:total_demand]
       end
 
       # Public: Returns the price curve contained in the archive.
@@ -93,6 +93,10 @@ module Merit
           total_consumption:  total_demand,
           load_profile:       profile
         )
+      end
+
+      def info
+        @info ||= YAML.load_file(@path.join('archive-info.yml'))
       end
     end # Archive
   end # Convergence

@@ -1,31 +1,17 @@
 require_relative '../lib/merit/convergence'
 
-# Path to the "load_profiles" directory. In this example, it is assumed that
-# "merit-convergence" and "merit" have a common parent directory...
-#
-#   └ Projects/
-#     ├ merit-convergence/
-#     │ ├ data/
-#     │ ├ examples/
-#     │ └ ...
-#     └ merit/
-#       ├ ...
-#       └ load_profiles/
-#
-PROFILES_DIR = Pathname.new(__FILE__)
-  .join('../../../merit/load_profiles').expand_path
-
 # Path to the directory containing data exported from ETEngine.
-DATA_DIR = Pathname.new(__FILE__).join('../../data').expand_path
+DATA_DIR     = Pathname.new(__FILE__).join('../../data').expand_path
+PROFILES_DIR = Pathname.new(Merit.root)
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('DE_2014-07-23_20-11-20'),  # Path to the DE data.
-  PROFILES_DIR.join('de')                   # Path to the DE load profiles.
+  DATA_DIR.join('de'),                   # Path to the DE data.
+  PROFILES_DIR.join('load_profiles/de')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('NL_2014-07-23_20-16-08'),  # Path to the NL data.
-  PROFILES_DIR.join('nl')                   # Path to the NL load profiles.
+  DATA_DIR.join('nl'),                   # Path to the NL data.
+  PROFILES_DIR.join('load_profiles/nl')  # Path to the NL load profiles.
 )
 
 # ------------------------------------------------------------------------------
@@ -45,13 +31,21 @@ runner.add_interconnect(DE_ARCHIVE, 2449.0)
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
 
-puts 'Before including export to Germany (@ Feb 11, 18:00)'
-puts '----------------------------------------------------'
+puts 'Before including export to Germany @ Feb 12, 08:00'
+puts '--------------------------------------------------'
 puts
-puts Merit::PointTable.new(runner.first_order).table_for(1002)
+puts Merit::PointTable.new(runner.first_order).table_for(1040)
 puts
 
-puts 'After including export to Germany (@ Feb 11, 18:00)'
-puts '---------------------------------------------------'
+# See what the German merit order looks like by uncommenting:
+#
+# puts 'German Merit Order (not including import from NL) @ Feb 12, 08:00'
+# puts '-----------------------------------------------------------------'
+# puts
+# puts Merit::PointTable.new(runner.other_orders[:de]).table_for(1040)
+# puts
+
+puts 'After including export to Germany @ Feb 12, 08:00'
+puts '-------------------------------------------------'
 puts
-puts Merit::PointTable.new(merit_order).table_for(1002)
+puts Merit::PointTable.new(merit_order).table_for(1040)
