@@ -26,7 +26,6 @@ DE_ARCHIVE = Merit::Convergence::Archive.new(
 NL_ARCHIVE = Merit::Convergence::Archive.new(
   DATA_DIR.join('NL_2014-07-23_20-16-08'),  # Path to the NL data.
   PROFILES_DIR.join('nl')                   # Path to the NL load profiles.
-
 )
 
 # Always use the Convergence calculator in this script. Do not forget this in
