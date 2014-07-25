@@ -16,7 +16,7 @@ module Merit
       #
       # Returns a String.
       def area
-        @path.join('area.txt').read.strip
+        @path.join('area.txt').read.strip.to_sym
       end
 
       # Public: Creates a new Merit::Order with the data contained in the
