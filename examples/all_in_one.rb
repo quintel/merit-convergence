@@ -26,7 +26,7 @@ runner.add_interconnect(DE_ARCHIVE, 2449.0)
 # Presently the Runner supports only one "real" interconnect. For the moment,
 # you may add export loads to other nations if you have those in a Curve.
 #
-# runner.add_export(:be, LoadCurve.new([1.0, 12.1, 11.0, ...]))
+# runner.add_export(:be, LoadCurve.load_file('/path/to/file'))
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
