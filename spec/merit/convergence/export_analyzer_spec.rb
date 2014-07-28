@@ -23,7 +23,7 @@ module Merit
         key: :prod3, marginal_costs: 30.0, number_of_units: 3)
     end
 
-    let(:order) do
+    let(:local_order) do
       Merit::Order.new.tap do |order|
         order.add(DispatchableProducer.new(prod1_attrs))
         order.add(DispatchableProducer.new(prod2_attrs))
@@ -34,13 +34,36 @@ module Merit
       end
     end
 
+    let(:other_demand) { 4.0 }
+    let(:other_prices) { [10.0] * 5 }
+
+    let(:other_order) do
+      # Add five producers each with "other_demand" / 5 demand
+      Merit::Order.new.tap do |order|
+        5.times do |i|
+          order.add(DispatchableProducer.new(
+            producer_attrs.merge(
+              key: :"other_#{ i }",
+              output_capacity_per_unit: 1.0,
+              marginal_costs: other_prices[i]
+            )
+          ))
+        end
+
+        l_curve = Curve.new([other_demand] * Merit::POINTS)
+        order.add(User.create(key: :user, load_curve: l_curve))
+      end
+    end
+
     let(:export) do
-      p_curve = Curve.new([ic_price] * Merit::POINTS)
       c_curve = Curve.new([ic_capacity] * Merit::POINTS)
 
-      order.calculate(Merit::Convergence::Calculator.new)
+      other_order.calculate(Merit::Convergence::Calculator.new)
+      local_order.calculate(Merit::Convergence::Calculator.new)
 
-      Convergence::ExportAnalyzer.new(order, c_curve, p_curve).load_curve.get(0)
+      Convergence::ExportAnalyzer.new(
+        local_order, other_order, c_curve
+      ).load_curve.get(0)
     end
 
     # --------------------------------------------------------------------------
@@ -50,7 +73,7 @@ module Merit
       let(:ic_capacity)  { 2.0 }
 
       context 'and the foreign country is cheaper' do
-        let(:ic_price) { 10.0 }
+        let(:other_prices) { [10.0] * 5 }
 
         it 'does not export' do
           expect(export).to be_zero
@@ -58,7 +81,7 @@ module Merit
       end # and the foreign country is cheaper
 
       context 'and the foreign country is more expensive' do
-        let(:ic_price) { 40.0 }
+        let(:other_prices) { [40.0] * 5 }
 
         context 'limited by local capacity' do
           let(:ic_capacity) { 10.0 }
@@ -100,6 +123,14 @@ module Merit
             expect(export).to eq(2.0)
           end
         end # limited by interconnect capacity
+
+        context 'limited by foreign demand' do
+          let(:other_prices) { [10.0, 10.0, 10.0, 40.0, 40.0] }
+
+          it 'only assigns as much energy as is more expensive' do
+            expect(export).to eq(1.0)
+          end
+        end # limited by foreign demand
       end # and the foreign country is more expensive
     end # when the main country has spare capacity
 

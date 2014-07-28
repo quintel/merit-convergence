@@ -94,9 +94,7 @@ module Merit
       def analyze_exports!
         @interconnects.each do |region_code, data|
           analysis = Merit::Convergence::ExportAnalyzer.new(
-            @first_order, data[:capacity],
-            @other_orders[region_code].price_curve
-          )
+            @first_order, @other_orders[region_code], data[:capacity])
 
           add_export(region_code, analysis.load_curve)
         end
