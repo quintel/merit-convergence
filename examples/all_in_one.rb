@@ -30,9 +30,10 @@ runner.add_interconnect(DE_ARCHIVE, 2449.0)
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
+time        = Time.at(1040 * 60 * 60).utc.strftime('%d %b @ %H:00')
 
-puts 'Before including export to Germany @ Feb 12, 08:00'
-puts '--------------------------------------------------'
+puts "Before including export to Germany @ #{ time }"
+puts "------------------------------------#{ '-' * time.length }"
 puts
 puts Merit::PointTable.new(runner.first_order).table_for(1040)
 puts
@@ -45,7 +46,7 @@ puts
 # puts Merit::PointTable.new(runner.other_orders[:de]).table_for(1040)
 # puts
 
-puts 'After including export to Germany @ Feb 12, 08:00'
-puts '-------------------------------------------------'
+puts "After including export to Germany @ #{ time }"
+puts "------------------------------------#{ '-' * time.length }"
 puts
 puts Merit::PointTable.new(merit_order).table_for(1040)
