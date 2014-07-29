@@ -86,10 +86,15 @@ module Merit
       #
       # Returns a numeric.
       def foreign_demand(point)
-        foreign_producers(point, @local.price_curve.get(point))
-          .reduce(0.0) do |sum, prod|
-            sum + prod.load_curve.get(point)
-          end
+        local_price = @local.price_curve.get(point)
+        producers   = foreign_producers(point, local_price)
+
+        producers.reduce(0.0) do |sum, prod|
+          amount = prod.load_curve.get(point) -
+            Convergence.competitive_load(prod, point, local_price)
+
+          sum + amount
+        end
       end
 
       # Internal: Returns all producers in the foreign country which are more
@@ -98,10 +103,7 @@ module Merit
       # Returns an array of producers.
       def foreign_producers(point, price)
         @abroad.participants.dispatchables.select do |producer|
-          # if point.zero?
-            # p [producer, producer.cost_strategy.sortable_cost(point), price]
-          # end
-          (producer.cost_strategy.sortable_cost(point) > price) &&
+          Convergence.producer_cost(producer, point) > price &&
             producer.load_curve.get(point) > 0
         end
       end

@@ -45,7 +45,7 @@ module Merit
         # Ignore the possibility for a Resortable to be delivered as the third
         # method argument. We're going to resort the transients anyway.
         transients = order.participants.transients(point)
-          .sort_by { |transient| pcost(transient, point) }
+          .sort_by { |transient| Convergence.producer_cost(transient, point) }
 
         while producer = transients.shift do
           max_load = producer.max_load_at(point)
@@ -75,7 +75,8 @@ module Merit
             # first producer which is more expensive -- and inserting before
             # that producer -- is 2x faster than resorting the list entirely.
             insert_at = transients.index do |other|
-              pcost(other, point) >= pcost(producer, point)
+              Convergence.producer_cost(other, point) >=
+                Convergence.producer_cost(producer, point)
             end
 
             transients.insert(insert_at || transients.length, producer)
@@ -101,16 +102,6 @@ module Merit
             # calls to Producer#max_load_at.
             break
           end
-        end
-      end
-
-      def pcost(producer, point)
-        strategy = producer.cost_strategy
-
-        if strategy.respond_to?(:cost_at_load)
-          strategy.cost_at_load(producer.load_curve.get(point))
-        else
-          strategy.sortable_cost(point)
         end
       end
 

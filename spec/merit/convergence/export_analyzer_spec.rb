@@ -42,11 +42,16 @@ module Merit
       Merit::Order.new.tap do |order|
         5.times do |i|
           order.add(DispatchableProducer.new(
-            producer_attrs.merge(
-              key: :"other_#{ i }",
-              output_capacity_per_unit: 1.0,
-              marginal_costs: other_prices[i]
-            )
+            if other_prices[i].is_a?(Hash)
+              producer_attrs.merge(
+                key: :"other_#{ i + 1}"
+              ).merge(other_prices[i])
+            else
+              producer_attrs.merge(
+                key: :"other_#{ i + 1}",
+                marginal_costs: other_prices[i]
+              )
+            end
           ))
         end
 
@@ -70,7 +75,7 @@ module Merit
 
     context 'when the main country has spare capacity' do
       let(:local_demand) { 2.0 }
-      let(:ic_capacity)  { 2.0 }
+      let(:ic_capacity)  { 10.0 }
 
       context 'and the foreign country is cheaper' do
         let(:other_prices) { [10.0] * 5 }
@@ -84,8 +89,6 @@ module Merit
         let(:other_prices) { [40.0] * 5 }
 
         context 'limited by local capacity' do
-          let(:ic_capacity) { 10.0 }
-
           it 'assigns the remaining capacity to the interconnect' do
             # The total available capacity is 5.0. Load is 2.0 (assigned to the
             # cheapest two producers) which leaves 3.0 available in the third
@@ -96,7 +99,6 @@ module Merit
 
         context 'when an available local producer is partially used' do
           let(:local_demand) { 1.5 }
-          let(:ic_capacity)  { 10.0 }
 
           it 'assigns the remaining capacity to the interconnect' do
             # 0.5 from #2, 3.0 from #3
@@ -131,6 +133,32 @@ module Merit
             expect(export).to eq(1.0)
           end
         end # limited by foreign demand
+
+        context 'limited by foreign demand using a step-function' do
+          let(:other_demand) { 7.0 }
+
+          let(:other_prices) { [
+            10.0, 10.0,
+            { marginal_costs: 30.0, cost_spread: 0.2, number_of_units: 4 },
+            40.0, 40.0
+          ] }
+
+          # Ensure the interconnect is not the limiting factor.
+          let(:ic_capacity) { 10.0 }
+
+          it 'only assigns as much energy as is more expensive' do
+            # Two of the "other_3" (cost-function) units, and the "other_4"
+            # plant are more expensive than importing.
+            #
+            # The step function for other_3 looks like:
+            #
+            #   1 plant  - 28.5
+            #   2 plants - 30.0
+            #   3 plants - 31.5
+            #   4 plants - 33.0
+            expect(export).to eq(3.0)
+          end
+        end
       end # and the foreign country is more expensive
     end # when the main country has spare capacity
 
