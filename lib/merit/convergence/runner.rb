@@ -17,6 +17,28 @@ module Merit
         @other_orders  = {}
       end
 
+      # Public: Returns a Curve combining import/export to another +region+.
+      # Positive numbers indicate export to the region (this is additional load
+      # in the local country) and negatives show the amount of import.
+      #
+      # Returns a Curve.
+      def interconnect_flow(region)
+        exporter = @second_order.participants[:"export_to_#{ region }"]
+        importer = @second_order.participants[:"import_from_#{ region }"]
+
+        data = Merit::POINTS.times.map do |point|
+          if (amount = importer.load_curve.get(point)) > 0
+            -amount
+          elsif (amount = exporter.load_curve.get(point)) > 0
+            amount
+          else
+            0.0
+          end
+        end
+
+        Curve.new(data)
+      end
+
       # Public: Add a two-way interconnect between the local country, and
       # another. The merit order will be calculated twice; once without
       # accounting for export to the other country, and again including said

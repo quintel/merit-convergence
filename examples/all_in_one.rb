@@ -60,3 +60,8 @@ puts Merit::PointTable.new(merit_order).table_for(1040)
 # calculated DE merit order):
 #
 # runner.other_orders[:de].price_curve
+
+# Produce a Curve which combines import and export to Germany. Exports are
+# positive numbers, imports are negative:
+#
+# runner.interconnect_flow(:de)
