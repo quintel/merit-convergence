@@ -50,3 +50,13 @@ puts "After including export to Germany @ #{ time }"
 puts "------------------------------------#{ '-' * time.length }"
 puts
 puts Merit::PointTable.new(merit_order).table_for(1040)
+
+# Get the price curve for NL:
+#
+# merit_order.price_curve
+
+# Get the price curve for DE (the "runner" object which is responsible for
+# calculating NL twice to account for import/export retains a copy of the
+# calculated DE merit order):
+#
+# runner.other_orders[:de].price_curve
