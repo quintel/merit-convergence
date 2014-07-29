@@ -40,8 +40,8 @@ puts
 
 # See what the German merit order looks like by uncommenting:
 #
-# puts 'German Merit Order (not including import from NL) @ Feb 12, 08:00'
-# puts '-----------------------------------------------------------------'
+# puts "German Merit Order (not including import from NL) @ #{ time }"
+# puts "-------------------------------------------------#{ '-' * time.length }"
 # puts
 # puts Merit::PointTable.new(runner.other_orders[:de]).table_for(1040)
 # puts
