@@ -21,13 +21,13 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('de'),                   # Path to the DE data.
-  DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_2014-07-29_10-58-09'),                   # Path to the DE data.
+  PROFILES_DIR.join('load_profiles/de')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('nl'),                   # Path to the NL data.
-  DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/NL_2014-07-29_10-57-11'),                   # Path to the NL data.
+  PROFILES_DIR.join('load_profiles/nl')  # Path to the NL load profiles.
 )
 
 # ------------------------------------------------------------------------------
@@ -43,6 +43,12 @@ runner.add_interconnect(DE_ARCHIVE, 2449.0)
 # you may add export loads to other nations if you have those in a Curve.
 #
 # runner.add_export(:be, Merit::Curve.load_file('/path/to/file'))
+
+runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/be.csv'))
+runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/gbr.csv'))
+runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/nor.csv'))
+#runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/den.csv'))
+
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
@@ -70,7 +76,30 @@ puts Merit::PointTable.new(merit_order).table_for(hour)
 
 # Get the price curve for NL:
 #
-# merit_order.price_curve
+merit_order.price_curve
+
+columns = merit_order.participants.producers.map do |producer|
+  [ producer.key,
+    producer.class,
+    producer.output_capacity_per_unit,
+    producer.number_of_units,
+    producer.marginal_costs,
+    producer.load_curve.to_a
+  ].flatten
+end.transpose
+
+csv_content = CSV.generate do |csv|
+  columns.each { |column| csv << column }
+end
+
+#puts csv_content
+File.write('nl_load_curve.csv', csv_content)
+
+csv_content = CSV.generate do |csv|
+  merit_order.price_curve.each { |v| csv << [v] }
+end
+
+File.write('nl_price_curve.csv', csv_content)
 
 # Get the price curve for DE (the "runner" object which is responsible for
 # calculating NL twice to account for import/export retains a copy of the
@@ -82,3 +111,30 @@ puts Merit::PointTable.new(merit_order).table_for(hour)
 # positive numbers, imports are negative:
 #
 # runner.interconnect_flow(:de)
+
+de_order = runner.other_orders[:de]
+
+de_order.price_curve
+
+columns = de_order.participants.producers.map do |producer|
+  [ producer.key,
+    producer.class,
+    producer.output_capacity_per_unit,
+    producer.number_of_units,
+    producer.marginal_costs,
+    producer.load_curve.to_a
+  ].flatten
+end.transpose
+
+csv_content = CSV.generate do |csv|
+  columns.each { |column| csv << column }
+end
+
+#puts csv_content
+File.write('de_load_curve.csv', csv_content)
+
+csv_content = CSV.generate do |csv|
+  de_order.price_curve.each { |v| csv << [v] }
+end
+
+File.write('de_price_curve.csv', csv_content)
