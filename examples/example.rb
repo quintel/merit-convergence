@@ -1,17 +1,33 @@
 require_relative '../lib/merit/convergence'
 
+# The merit-convergence directory.
+CONVERGENCE_DIR = Pathname.new(__FILE__).join('../..').expand_path
+
 # Path to the directory containing data exported from ETEngine.
-DATA_DIR     = Pathname.new(__FILE__).join('../../data').expand_path
-PROFILES_DIR = Pathname.new(Merit.root)
+DATA_DIR = CONVERGENCE_DIR.join('data')
+
+# Path to the ETSource datasets/ directory. The default value assumes that
+# ETSource and Merit::Convergence have a common parent directory.
+#
+#   └ Projects/
+#     ├ etsource/
+#     │ ├ datasets/
+#     │ └ ...
+#     └ merit-convergence/
+#       ├ data/
+#       ├ examples/
+#       └ ...
+#
+DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
   DATA_DIR.join('de'),                   # Path to the DE data.
-  PROFILES_DIR.join('load_profiles/de')  # Path to the DE load profiles.
+  DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
   DATA_DIR.join('nl'),                   # Path to the NL data.
-  PROFILES_DIR.join('load_profiles/nl')  # Path to the NL load profiles.
+  DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
 # Always use the Convergence calculator in this script. Do not forget this in
@@ -66,9 +82,9 @@ nl_order.calculate
 # This point-by-point load is available by calling "analysis.load_curve".
 
 analysis = Merit::Convergence::ExportAnalyzer.new(
-  nl_order,             # The local country.
-  2449.0,               # The interconnect capacity.
-  de_order.price_curve  # The other country's price curve.
+  nl_order,  # The local country.
+  de_order,  # The other country.
+  2449.0     # The interconnect capacity.
 )
 
 # ------------------------------------------------------------------------------
