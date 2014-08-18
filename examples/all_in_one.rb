@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_2014-07-29_10-58-09'),                   # Path to the DE data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_2014-08-18_16-02-11'),                   # Path to the DE data.
   PROFILES_DIR.join('load_profiles/de')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/NL_2014-07-29_10-57-11'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/NL_2014-08-18_16-02-46'),                   # Path to the NL data.
   PROFILES_DIR.join('load_profiles/nl')  # Path to the NL load profiles.
 )
 
@@ -114,8 +114,6 @@ File.write('nl_price_curve.csv', csv_content)
 
 de_order = runner.other_orders[:de]
 
-de_order.price_curve
-
 columns = de_order.participants.producers.map do |producer|
   [ producer.key,
     producer.class,
@@ -138,3 +136,15 @@ csv_content = CSV.generate do |csv|
 end
 
 File.write('de_price_curve.csv', csv_content)
+
+# Produce a Curve which combines import and export to Germany. Exports are
+# positive numbers, imports are negative:
+#
+csv_content = CSV.generate do |csv|
+  de_order.interconnect_flow(:de).each { |v| csv << [v] }
+end
+
+File.write('interconnector_curve.csv', csv_content)
+
+
+
