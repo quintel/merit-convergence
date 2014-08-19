@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_2014-08-18_16-02-11'),                   # Path to the DE data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/no_must_run_chps/DE_2014-08-18_16-02-11'),                   # Path to the DE data.
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/NL_2014-08-18_16-02-46'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/no_must_run_chps/NL_2014-08-18_16-02-46'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
@@ -52,7 +52,7 @@ runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-conv
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
-hour        = 1040
+hour        = 378
 time        = Time.at(hour * 60 * 60).utc.strftime('%d %b @ %H:00')
 
 puts "Before including export to Germany @ #{ time }"
