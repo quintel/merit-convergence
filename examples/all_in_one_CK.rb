@@ -1,17 +1,33 @@
 require_relative '../lib/merit/convergence'
 
+# The merit-convergence directory.
+CONVERGENCE_DIR = Pathname.new(__FILE__).join('../..').expand_path
+
 # Path to the directory containing data exported from ETEngine.
-DATA_DIR     = Pathname.new(__FILE__).join('../../data').expand_path
-PROFILES_DIR = Pathname.new(Merit.root)
+DATA_DIR = CONVERGENCE_DIR.join('data')
+
+# Path to the ETSource datasets/ directory. The default value assumes that
+# ETSource and Merit::Convergence have a common parent directory.
+#
+#   └ Projects/
+#     ├ etsource/
+#     │ ├ datasets/
+#     │ └ ...
+#     └ merit-convergence/
+#       ├ data/
+#       ├ examples/
+#       └ ...
+#
+DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
   DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_2014-08-18_16-02-11'),                   # Path to the DE data.
-  PROFILES_DIR.join('load_profiles/de')  # Path to the DE load profiles.
+  DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
   DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/NL_2014-08-18_16-02-46'),                   # Path to the NL data.
-  PROFILES_DIR.join('load_profiles/nl')  # Path to the NL load profiles.
+  DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
 # ------------------------------------------------------------------------------
@@ -23,16 +39,16 @@ runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 # calculated depending on the price of each region.
 runner.add_interconnect(DE_ARCHIVE, 2449.0)
 
-# Presently the Runner supports only one "real" interconnect. For the moment,
-# you may add export loads to other nations if you have those in a Curve.
-#
-# runner.add_export(:be, Merit::Curve.load_file('/path/to/file'))
-
 runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/be.csv'))
 runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/gbr.csv'))
 runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/nor.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/den.csv'))
 
+
+# Presently the Runner supports only one "real" interconnect. For the moment,
+# you may add export loads to other nations if you have those in a Curve.
+#
+# runner.add_export(:be, Merit::Curve.load_file('/path/to/file'))
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
@@ -125,10 +141,7 @@ File.write('de_price_curve.csv', csv_content)
 # positive numbers, imports are negative:
 #
 csv_content = CSV.generate do |csv|
-  de_order.interconnect_flow(:de).each { |v| csv << [v] }
+  runner.interconnect_flow(:de).each { |v| csv << [v] }
 end
 
 File.write('interconnector_curve.csv', csv_content)
-
-
-
