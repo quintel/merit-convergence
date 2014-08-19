@@ -2,6 +2,7 @@ GIT
   remote: git://github.com/quintel/merit.git
   revision: e87edfe8517b24961daafcd367cb8752cc46d01c
   branch: last-loaded
+
   specs:
     quintel_merit (0.1.0)
       terminal-table
