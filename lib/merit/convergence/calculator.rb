@@ -80,21 +80,11 @@ module Merit
             end
 
             transients.insert(insert_at || transients.length, producer)
-          elsif remaining > 0
+          else
             # There is less total load remaining to be assigned than the
             # capacity of a new plant.
-            add_load(producer, point, remaining)
+            add_load(producer, point, remaining) if remaining > 0
 
-            # Cost-function producers with at least one unit of capacity
-            # available will be the price-setting producer.
-            if producer.cost_strategy.price_setting?(point)
-              assign_price_setting(order, producer, point)
-              break
-            end
-
-            # The next producer will be price-setting.
-            remaining = 0
-          else
             assign_price_setting(order, producer, point)
 
             # Optimisation: If all of the demand has been accounted for, there
