@@ -21,12 +21,13 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/no_must_run_chps/DE_2014-08-18_16-02-11'),                   # Path to the DE data.
+ # DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140904_1722/DE_370426_2014-09-04_17-10-46'),                   # Path to the DE data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/DE_373531_2014-09-15_10-24-50'),
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/no_must_run_chps/NL_2014-08-18_16-02-46'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140904_1722/NL_370429_2014-09-04_17-11-12'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
@@ -38,10 +39,11 @@ runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 # Add an interconnect with a foreign nation. Import and export loads will be
 # calculated depending on the price of each region.
 runner.add_interconnect(DE_ARCHIVE, 2449.0)
+#runner.add_interconnect(DE_ARCHIVE, 4749.0)
 
-runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/be.csv'))
-runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/gbr.csv'))
-runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/nor.csv'))
+#runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/be.csv'))
+# runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/gbr.csv'))
+# runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/nor.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/den.csv'))
 
 
@@ -52,7 +54,7 @@ runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-conv
 
 # Do the two-step run, and get the final merit order back.
 merit_order = runner.run
-hour        = 378
+hour        = 4153
 time        = Time.at(hour * 60 * 60).utc.strftime('%d %b @ %H:00')
 
 puts "Before including export to Germany @ #{ time }"
@@ -63,16 +65,16 @@ puts
 
 # See what the German merit order looks like by uncommenting:
 #
-# puts "German Merit Order (not including import from NL) @ #{ time }"
-# puts "-------------------------------------------------#{ '-' * time.length }"
-# puts
-# puts Merit::PointTable.new(runner.other_orders[:de]).table_for(hour)
-# puts
-
-puts "After including export to Germany @ #{ time }"
-puts "------------------------------------#{ '-' * time.length }"
+puts "German Merit Order (not including import from NL) @ #{ time }"
+puts "-------------------------------------------------#{ '-' * time.length }"
 puts
-puts Merit::PointTable.new(merit_order).table_for(hour)
+puts Merit::PointTable.new(runner.other_orders[:de]).table_for(hour)
+puts
+
+# puts "After including export to Germany @ #{ time }"
+# puts "------------------------------------#{ '-' * time.length }"
+# puts
+# puts Merit::PointTable.new(merit_order).table_for(hour)
 
 # Get the price curve for NL:
 #
@@ -83,6 +85,7 @@ columns = merit_order.participants.producers.map do |producer|
     producer.class,
     producer.output_capacity_per_unit,
     producer.number_of_units,
+    #producer.availability,
     producer.marginal_costs,
     producer.load_curve.to_a
   ].flatten
@@ -119,6 +122,7 @@ columns = de_order.participants.producers.map do |producer|
     producer.class,
     producer.output_capacity_per_unit,
     producer.number_of_units,
+    #producer.availability,
     producer.marginal_costs,
     producer.load_curve.to_a
   ].flatten
