@@ -29,17 +29,20 @@ year = 8760
 
 plt.title("Import of electricity")
 plt.subplot(y_plots, x_plots, 1)
-plt.plot(be2013, label="BE_NL 2013")
-plt.plot([1501]*year, 'b--', label ="BE->NL capacity 2013")
-plt.plot(be2023, label="BE_NL 2023")
-plt.plot([2001]*year, 'g--', label ="BE->NL capacity 2023")
-plt.plot(gbr, label="GBR_NL")
-plt.plot([1000]*year, 'r--', label ="GBR->NL capacity 2013")
-plt.plot(nor2013, label="NOR_NL 2013")
-plt.plot([700]*year, 'k--', label ="NOR->NL capacity 2013")
+plt.plot(-be2013, label="BE_NL 2013")
+plt.plot([1501]*year, 'b--', label ="BE_NL capacity 2013")
+plt.plot(-be2023, label="BE_NL 2023")
+plt.plot([2001]*year, 'g--', label ="BE_NL capacity 2023")
+plt.plot(-gbr, label="GBR_NL")
+plt.plot([1000]*year, 'r--', label ="GBR_NL capacity 2013")
+plt.plot(-nor2013, label="NOR_NL 2013")
+plt.plot([700]*year, 'k--', label ="NOR_NL capacity 2013")
 #plt.plot(nor2023, label="NOR_NL 2023")
 
 plt.legend(bbox_to_anchor=[0.99, 0.99])
 plt.ylabel('MW')
 plt.xlabel('hours')
 plt.show()
+
+total_import = -np.sum(be2013+gbr+nor2013)/1e6 + 18.5
+print "Total import of NL: ", total_import, " TWh = ", total_import * 3.6, " PJ"
