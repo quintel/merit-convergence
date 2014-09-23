@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20130923_1502/DE_373832_2014-09-23_09-22-31'),
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140923_0922/DE_373832_2014-09-23_09-22-31'),
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20130923_1502/NL_373837_2014-09-23_15-01-42'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140923_0922/NL_373830_2014-09-23_09-20-09'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
@@ -37,16 +37,16 @@ runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 
 # Add an interconnect with a foreign nation. Import and export loads will be
 # calculated depending on the price of each region.
-runner.add_interconnect(DE_ARCHIVE, 2449.0)
+runner.add_interconnect(DE_ARCHIVE, 4449.0)
 
 # These curves represent IMPORT from BE, GBR, NOR (and in the future DEN)
 # The numbers need to be NEGATIVE
 # Export is included in the load curve by a scaling
 
-runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2013.csv'))
+runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2023.csv'))
 runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/GBR_NL.csv'))
-runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
-#runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
+runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2023.csv'))
+runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
 
 
 # Presently the Runner supports only one "real" interconnect. For the moment,
