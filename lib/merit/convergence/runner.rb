@@ -89,6 +89,14 @@ module Merit
         second_run!
       end
 
+      # Public: Creates a (calculated) Merit order for the main country, without
+      # ANY interconnects.
+      #
+      # Returns a Merit Order.
+      def standalone
+        @local.merit_order.calculate(Merit::Convergence::Calculator.new)
+      end
+
       #######
       private
       #######
