@@ -43,16 +43,18 @@ runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-conv
 runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
 
+standalone = runner.standalone
 
-HERE I WOULD LIKE TO DO A RUN WITHOUT THE "DE" INTERCONNECT
-AND WRITE THE NL PRICE TO FILE
+csv_content = CSV.generate do |csv|
+    standalone.price_curve.each { |v| csv << [v] }
+end
 
+File.write('nl_original_price_curve.csv', csv_content)
 
 
 # Add an interconnect with a foreign nation. Import and export loads will be
 # calculated depending on the price of each region.
 runner.add_interconnect(DE_ARCHIVE, 2449.0)
-
 
 
 # Presently the Runner supports only one "real" interconnect. For the moment,
