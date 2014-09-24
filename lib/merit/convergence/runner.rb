@@ -93,8 +93,9 @@ module Merit
       # ANY interconnects.
       #
       # Returns a Merit Order.
-      def standalone
-        @local.merit_order.calculate(Merit::Convergence::Calculator.new)
+      def standalone(*include)
+        region_codes = (@interconnects.keys + @fixed_export.keys).uniq
+        create_merit_order(region_codes - Array(include))
       end
 
       #######
@@ -108,15 +109,24 @@ module Merit
         end
       end
 
+      # Internal: Creates a (calculated) merit order for the main country. An
+      # optional +except+ array argument specifies interconnect countries to be
+      # omitted from the order.
+      #
+      # Returns a Merit::Order.
+      def create_merit_order(except = [])
+        order = @local.merit_order
+
+        add_import_producers(order, except)
+        add_export_users(order, except)
+
+        order.calculate(Merit::Convergence::Calculator.new)
+      end
+
       # Internal: Performs the first run of the local merit order. Does not
       # include export from interconnects.
       def first_run!
-        @first_order = @local.merit_order
-
-        add_import_producers(@first_order)
-        add_export_users(@first_order)
-
-        @first_order.calculate(Merit::Convergence::Calculator.new)
+        @first_order = create_merit_order
       end
 
       # Internal: After doing the first merit order run, analyze when it is cost
@@ -133,18 +143,15 @@ module Merit
       # Internal: Now that we've analyzed the export loads, calculate the local
       # country again accounting for those loads.
       def second_run!
-        @second_order = @local.merit_order
-
-        add_import_producers(@second_order)
-        add_export_users(@second_order)
-
-        @second_order.calculate(Merit::Convergence::Calculator.new)
+        @second_order = create_merit_order
       end
 
       # Internal: Given a Merit Order for the local country, adds a
       # SupplyInterconnect for each connection to a foreign country.
-      def add_import_producers(order)
+      def add_import_producers(order, except = [])
         @interconnects.each do |region_code, data|
+          next if except.include?(region_code)
+
           order.add(Merit::SupplyInterconnect.new(
             key: :"import_from_#{ region_code }",
             cost_curve: @other_orders[region_code].price_curve,
@@ -156,8 +163,10 @@ module Merit
       # Internal: Given a Merit Order for the local country, adds a User which
       # represents the electricity which will be exported to each foreign
       # country.
-      def add_export_users(order)
+      def add_export_users(order, except = [])
         @fixed_export.each do |region_code, load_curve|
+          next if except.include?(region_code)
+
           order.add(Merit::User.create(
             key: :"export_to_#{ region_code }",
             load_curve: load_curve
