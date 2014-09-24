@@ -43,7 +43,7 @@ runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-conv
 runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
 
-standalone = runner.standalone
+standalone = runner.standalone(:be, :gbr, :nor)
 
 csv_content = CSV.generate do |csv|
     standalone.price_curve.each { |v| csv << [v] }
