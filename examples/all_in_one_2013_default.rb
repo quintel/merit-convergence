@@ -35,18 +35,24 @@ NL_ARCHIVE = Merit::Convergence::Archive.new(
 # Create a Runner with data for the local country.
 runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 
-# Add an interconnect with a foreign nation. Import and export loads will be
-# calculated depending on the price of each region.
-runner.add_interconnect(DE_ARCHIVE, 2449.0)
-
 # These curves represent IMPORT from BE, GBR, NOR (and in the future DEN)
 # The numbers need to be NEGATIVE
 # Export is included in the load curve by a scaling
-
 runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2013.csv'))
 runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/GBR_NL.csv'))
 runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
+
+
+HERE I WOULD LIKE TO DO A RUN WITHOUT THE "DE" INTERCONNECT
+AND WRITE THE NL PRICE TO FILE
+
+
+
+# Add an interconnect with a foreign nation. Import and export loads will be
+# calculated depending on the price of each region.
+runner.add_interconnect(DE_ARCHIVE, 2449.0)
+
 
 
 # Presently the Runner supports only one "real" interconnect. For the moment,
