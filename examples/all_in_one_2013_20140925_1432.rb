@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140923_1743/DE_373847_2014-09-23_17-43-45'),
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_1432/DE_373832_2014-09-23_09-22-31'),
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140923_1743/NL_373841_2014-09-23_17-34-26'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_1432/NL_373830_2014-09-25_14-32-37'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
@@ -38,12 +38,12 @@ runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 # These curves represent IMPORT from BE, GBR, NOR (and in the future DEN)
 # The numbers need to be NEGATIVE
 # Export is included in the load curve by a scaling
-runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2023.csv'))
+runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2013.csv'))
 runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/GBR_NL.csv'))
-runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2023.csv'))
-runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
+runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
+#runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
 
-standalone = runner.standalone(:be, :gbr, :nor, :den)
+standalone = runner.standalone(:be, :gbr, :nor)
 
 csv_content = CSV.generate do |csv|
     standalone.price_curve.each { |v| csv << [v] }
@@ -51,9 +51,11 @@ end
 
 File.write('nl_original_price_curve.csv', csv_content)
 
+
 # Add an interconnect with a foreign nation. Import and export loads will be
 # calculated depending on the price of each region.
-runner.add_interconnect(DE_ARCHIVE, 5049.0)
+runner.add_interconnect(DE_ARCHIVE, 2449.0)
+
 
 # Presently the Runner supports only one "real" interconnect. For the moment,
 # you may add export loads to other nations if you have those in a Curve.
@@ -157,3 +159,44 @@ csv_content = CSV.generate do |csv|
 end
 
 File.write('interconnector_curve.csv', csv_content)
+
+
+################### Statistics on "% of time of being price-setting" ##########################
+# Build a hash counting the number of times each producer is price-setting.
+ 
+price_setting_stats = Hash.new(0)
+ 
+merit_order.price_setting_producers.each do |producer|
+  price_setting_stats[producer] += 1
+end
+ 
+# Produce a CSV containing the producer keys, marginal costs, capacity, and the
+# percentage of the year in which they are price-setting.
+ 
+headers = ['Key', 'Marginal_Cost_(EUR/MWh)', 'Capacity_(MWh)', '%_Price-setting']
+ 
+price_content = CSV.generate(headers: headers, write_headers: true) do |csv|
+  producers = merit_order.participants.producers.sort_by do |producer|
+    # Sort the most-price setting producers at the top, and then by key.
+    [-price_setting_stats[producer], producer.key]
+  end
+ 
+  producers.each do |producer|
+    csv << [
+      producer.key,
+      producer.marginal_costs,
+      producer.available_output_capacity,
+      (price_setting_stats[producer].to_f / Merit::POINTS) * 100
+    ]
+  end
+ 
+  # Hours in which there is no price-setting converter, the "emergency price"
+  # (the most expensive producer * 7.22) is used.
+ 
+  csv << [
+    'emergency_price', '', '',
+    (price_setting_stats[nil].to_f / Merit::POINTS) * 100
+  ]
+end
+ 
+File.write('price_setting_producers.csv', price_content)

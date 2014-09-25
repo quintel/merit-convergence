@@ -54,7 +54,7 @@ File.write('nl_original_price_curve.csv', csv_content)
 
 # Add an interconnect with a foreign nation. Import and export loads will be
 # calculated depending on the price of each region.
-runner.add_interconnect(DE_ARCHIVE, 4449.0)
+runner.add_interconnect(DE_ARCHIVE, 5049.0)
 
 
 # Presently the Runner supports only one "real" interconnect. For the moment,
