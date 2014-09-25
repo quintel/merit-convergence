@@ -159,3 +159,94 @@ csv_content = CSV.generate do |csv|
 end
 
 File.write('interconnector_curve.csv', csv_content)
+
+################### Statistics on "% of time of being price-setting" ##########################
+# Build a hash counting the number of times each producer is price-setting.
+ 
+price_setting_stats = Hash.new(0)
+ 
+merit_order.price_setting_producers.each do |producer|
+  price_setting_stats[producer] += 1
+end
+ 
+# Produce a CSV containing the producer keys, marginal costs, capacity, and the
+# percentage of the year in which they are price-setting.
+ 
+headers = ['Key', 'Marginal_Cost_(EUR/MWh)', 'Capacity_(MWh)', '%_Price-setting']
+ 
+price_content = CSV.generate(headers: headers, write_headers: true) do |csv|
+  producers = merit_order.participants.producers.sort_by do |producer|
+    # Sort the most-price setting producers at the top, and then by key.
+    [-price_setting_stats[producer], producer.key]
+  end
+ 
+  producers.each do |producer|
+    csv << [
+      producer.key,
+      producer.marginal_costs,
+      producer.available_output_capacity,
+      (price_setting_stats[producer].to_f / Merit::POINTS) * 100
+    ]
+  end
+ 
+  # Hours in which there is no price-setting converter, the "emergency price"
+  # (the most expensive producer * 7.22) is used.
+ 
+  csv << [
+    'emergency_price', '', '',
+    (price_setting_stats[nil].to_f / Merit::POINTS) * 100
+  ]
+end
+ 
+File.write('price_setting_producers.csv', price_content)
+
+################### Statistics on "% of time of being price-setting" ##########################
+# Build a hash counting the number of times each producer is price-setting.
+ 
+price_setting_stats = Hash.new(0)
+ 
+merit_order.price_setting_producers.each do |producer|
+  price_setting_stats[producer] += 1
+end
+ 
+# Produce a CSV containing the producer keys, marginal costs, capacity, and the
+# percentage of the year in which they are price-setting.
+ 
+headers = ['Key', 'Marginal Cost (EUR)', 'Capacity (MWh)', '% Price-setting']
+ 
+price_content = CSV.generate(headers: headers, write_headers: true) do |csv|
+  producers = merit_order.participants.producers.sort_by do |producer|
+    # Sort the most-price setting producers at the top, and then by key.
+    [-price_setting_stats[producer], producer.key]
+  end
+ 
+  producers.each do |producer|
+    cost = if producer.cost_strategy.variable?
+      hourly = merit_order.price_setting_producers.map.with_index do |ps_prod, index|
+        producer.price_at(index) if ps_prod == producer
+      end
+ 
+      hourly = hourly.compact
+      hourly.reduce(:+) / hourly.length
+    else
+      producer.marginal_costs
+    end
+ 
+    csv << [
+      producer.key,
+      cost,
+      producer.available_output_capacity,
+      (price_setting_stats[producer].to_f / Merit::POINTS) * 100
+    ]
+  end
+ 
+  # Hours in which there is no price-setting converter, the "emergency price"
+  # (the most expensive producer * 7.22) is used.
+ 
+  csv << [
+    'emergency_price', '', '',
+    (price_setting_stats[nil].to_f / Merit::POINTS) * 100
+  ]
+end
+ 
+File.write('price_setting_producers.csv', price_content)

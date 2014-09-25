@@ -173,7 +173,7 @@ end
 # Produce a CSV containing the producer keys, marginal costs, capacity, and the
 # percentage of the year in which they are price-setting.
  
-headers = ['Key', 'Marginal Cost (EUR)', 'Capacity (MWh)', '% Price-setting']
+headers = ['Key', 'Marginal_Cost_(EUR/MWh)', 'Capacity_(MWh)', '%_Price-setting']
  
 price_content = CSV.generate(headers: headers, write_headers: true) do |csv|
   producers = merit_order.participants.producers.sort_by do |producer|
