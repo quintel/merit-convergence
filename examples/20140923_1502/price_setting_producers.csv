@@ -1,4 +1,4 @@
-Key,Marginal Cost (EUR),Capacity (MWh),% Price-setting
+Key,Marginal_Cost_(EUR/MWh),Capacity_(MWh),%_Price-setting
 energy_power_combined_cycle_network_gas,48.04221726438934,5904.0,54.657534246575345
 energy_chp_combined_cycle_network_gas,67.95352466341336,4763.399999999994,27.054794520547947
 import_from_de,32.077808215164445,2449.0,10.365296803652967
