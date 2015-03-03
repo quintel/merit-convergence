@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_0938/DE_369395_2014-09-01_16-00-45'),
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20150225_1208/DE_369381_2014-09-24_15-37-53'),
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_0938/NL_373859_2014-09-25_09-41-46'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20150225_1208/NL_403058_2015-02-25_12-09-55'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 

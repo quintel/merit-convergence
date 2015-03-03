@@ -21,12 +21,12 @@ DATA_DIR = CONVERGENCE_DIR.join('data')
 DATASETS_DIR = CONVERGENCE_DIR.join('../etsource/datasets')
 
 DE_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_0938/DE_369395_2014-09-01_16-00-45'),
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20150226_1632/DE_403127_2015-02-26_16-33-19'),
   DATASETS_DIR.join('de/load_profiles')  # Path to the DE load profiles.
 )
 
 NL_ARCHIVE = Merit::Convergence::Archive.new(
-  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20140925_0938/NL_373859_2014-09-25_09-41-46'),                   # Path to the NL data.
+  DATA_DIR.join('/Users/kruip/Projects/etengine/tmp/convergence/20150226_1632/NL_403125_2015-02-26_16-37-16'),                   # Path to the NL data.
   DATASETS_DIR.join('nl/load_profiles')  # Path to the NL load profiles.
 )
 
@@ -38,9 +38,9 @@ runner = Merit::Convergence::Runner.new(NL_ARCHIVE)
 # These curves represent IMPORT from BE, GBR, NOR (and in the future DEN)
 # The numbers need to be NEGATIVE
 # Export is included in the load curve by a scaling
-runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2023.csv'))
+runner.add_export(:be, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/BE_NL_2013.csv'))
 runner.add_export(:gbr, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/GBR_NL.csv'))
-runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2023.csv'))
+runner.add_export(:nor, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/NOR_NL_2013.csv'))
 #runner.add_export(:den, Merit::Curve.load_file('/Users/kruip/Projects/merit-convergence/data/nl/interconnector_load_curves/DEN_NL.csv'))
 
 standalone = runner.standalone(:be, :gbr, :nor)
@@ -173,7 +173,7 @@ end
 # Produce a CSV containing the producer keys, marginal costs, capacity, and the
 # percentage of the year in which they are price-setting.
  
-headers = ['Key', 'Marginal_Cost_(EUR/MWh)', 'Capacity_(MW)', '%_Price-setting']
+headers = ['Key', 'Marginal_Cost_(EUR/MWh)', 'Capacity_(MWh)', '%_Price-setting']
  
 price_content = CSV.generate(headers: headers, write_headers: true) do |csv|
   producers = merit_order.participants.producers.sort_by do |producer|
